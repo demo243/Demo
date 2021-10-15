@@ -1,0 +1,19 @@
+npm init -> package.json generated
+
+npm i express
+  -> "dependencies": {
+        "express": "^4.17.1"
+    }
+  -> package-lock.json
+  -> node_modules 
+
+npm i eslint
+    "devDependencies": {
+        "eslint": "^7.32.0"
+    }
+
+MVC
+m -> models
+view -> fronend
+c -> controller / modules
+utility/ lib
