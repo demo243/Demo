@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require('mongoose');
 
 const app = express()
 const port = 3200
@@ -25,6 +26,7 @@ mongoose.connect('mongodb://localhost:27017/demo', {useNewUrlParser: true, useUn
 app.get('/contact', (req, res) => { //home page
   res.send('Hello World!')
 })
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
