@@ -9,12 +9,14 @@ mongoose.connect('mongodb://localhost:27017/demo', {useNewUrlParser: true, useUn
 .then((connection) => {
   console.log("connected to DB --->>>")
   const userRouter = require('./src/routes/users')
+  const authenticationRouter = require('./src/routes/authentication')
   
   app.get('/contact', (req, res) => { //home page
     res.send('Hello World!')
   })
 
   app.use('/', userRouter)
+  app.use('/', authenticationRouter)
 
 })
 .catch((error) => {
