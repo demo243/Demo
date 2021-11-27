@@ -23,6 +23,7 @@ const signup = (request, response) => {
 				return response.send(userDetails)
 		})
 		.catch((error) => {
+				console.log("Error")
 				return response.send(error)
 		})
 	})
