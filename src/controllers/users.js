@@ -1,4 +1,7 @@
-const { response } = require("express")
+const jwt = require('jsonwebtoken')
+const jwt_decode = require('jwt-decode')
+
+const applicationSecretKey = "ApplicationSecretKey123"
 
 const createUsers = (request, response) => {
     console.log(request.body)
@@ -7,11 +10,21 @@ const createUsers = (request, response) => {
 
 const updateUsers = (request, response) => {
     console.log(request.params.id)
+    // const decodedValueUsingJWT = jwt.verify(request.headers.token, applicationSecretKey)
+    // console.log(decodedValueUsingJWT)
+    // const decodedValueUsingJWTDecode = jwt_decode(request.headers.token)
+    // console.log(decodedValueUsingJWTDecode)
+		console.log(request.user)
     response.send("We updated your request !!!")
 }
 
 const deleteUsers = (request, response) => {
     console.log(request.params.id)
+    // const decodedValueUsingJWT = jwt.verify(request.headers.token, applicationSecretKey)
+    // console.log(decodedValueUsingJWT)
+    // const decodedValueUsingJWTDecode = jwt_decode(request.headers.token)
+    // console.log(decodedValueUsingJWTDecode)
+		console.log(request.user)
     response.send("We deleted record !!!")
 }
 
