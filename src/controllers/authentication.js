@@ -1,5 +1,7 @@
 const User = require('../models/user')
 const crypto = require('crypto')
+const jwt = require('jsonwebtoken');
+const applicationSecretKey = "ApplicationSecretKey123"
 
 const signup = (request, response) => {
 	console.log(request)
@@ -55,11 +57,18 @@ const login = (request, response) => {
 			})
 		}
 
+		const token = jwt.sign({
+			id: result._id,
+			name: result.name,
+			email: result.email
+		}, applicationSecretKey)
+
 		return response.status(200).send({
 				status: true,
 				data: {
 					name: result.name,
-					email: result.email
+					email: result.email,
+					token
 				}
 				
 			})
