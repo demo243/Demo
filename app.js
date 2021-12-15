@@ -11,6 +11,8 @@ mongoose.connect('mongodb://localhost:27017/demo', {useNewUrlParser: true, useUn
   console.log("connected to DB --->>>")
   const userRouter = require('./src/routes/users')
   const authenticationRouter = require('./src/routes/authentication')
+  const productsRouter = require('./src/routes/products')
+  const categoryRouter = require('./src/routes/category')
   
   app.get('/contact', (req, res) => { //home page
     res.send('Hello World!')
@@ -31,6 +33,9 @@ mongoose.connect('mongodb://localhost:27017/demo', {useNewUrlParser: true, useUn
 
   app.use('/', userRouter)
   app.use('/', authenticationRouter)
+  app.use('/', productsRouter)
+  app.use('/', categoryRouter)
+
 
 })
 .catch((error) => {
