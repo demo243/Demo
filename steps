@@ -17,3 +17,138 @@ m -> models
 view -> fronend
 c -> controller / modules
 utility/ lib
+
+
+/*** insert ***/
+db.getCollection('products').insert({                    
+    name: "product name",                                    
+    category:  ObjectId("61ac700fccdc60112b11e63c"),         
+    price: 12999,                                         
+    description: "This is description",
+    stock: 30,
+    codeEligible: true, 
+    code: "Mobile111" ,  
+    color: ["Space Grey", "Silver"],
+   highlights: [	                                     
+        "Demo Highlights for Redmi 8i",
+        "4 GB RAM | 64 GB ROM | Expandable Upto 512 GB"
+   ]
+})
+
+/**** Update ***/
+db.getCollection('products').update( 
+   {_id: ObjectId("61ac7750ccdc60112b11e647")},
+   {$set:  {price: 13000, code: "Mobile222"} }
+}
+
+/*** Delete ***/
+db.getCollection('products').remove({ })
+
+/*** Find ***/
+db.getCollection('products').find({})
+
+/*** Lookup ***/
+db.products.aggregate([
+ {
+     $lookup: {
+          from: 'categories',
+         localField: 'category',
+         foreignField: '_id',
+         as: 'category'
+     }
+  },
+  {$skip: 0},
+  {$limit: 10}
+])
+//skip = (page-1)*limit = 2-1*5 = 5
+
+db.getCollection('products').find({}).skip(5).limit(5)
+  //skip = (page-1)*limit = 2-1*5 = 5
+
+
+  db.products.aggregate([
+    {$match: {price: {$gte: 13000, $lte: 18000 }} },
+    {
+        $lookup: {
+             from: 'categories',
+            localField: 'category',
+            foreignField: '_id',
+            as: 'category'
+        }
+     },
+     {$skip: 0},
+     {$limit: 10},
+     {$sort: {price: -1} }
+   ])
+
+// sort without aggregation
+db.getCollection('products').find({}).skip(0).limit(5).sort({price: -1})
+
+db.products.aggregate([                               
+  {
+      $lookup: {
+           from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category'
+      }
+   },
+   {$skip: 0},
+   {$limit: 10},
+   //{ $sort : {price: 1} }
+   {$sort :{'category.name': 1} }
+ ])
+// $gte, $lte, $lt, $gt
+ db.getCollection('products').find({ price: { $gte: 10000, $lte: 20000 } }).sort({price: -1})
+
+ db.products.aggregate([    
+  {$match: { price: { $gte: 10000, $lte: 20000 } } },         
+  {
+      $lookup: {
+           from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category'
+      }
+   },
+   {$skip: 0},
+   {$limit: 10},
+   //{ $sort : {price: 1} }
+   {$sort :{'category.name': 1} }
+ ])
+
+// $in
+db.products.aggregate([    
+  {$match: { price: { $gte: 10000, $lte: 20000 },stock: { $in: [50, 20] }   } },     
+  {
+      $lookup: {
+           from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category'
+      }
+   },
+   {$skip: 0},
+   {$limit: 10},
+   //{ $sort : {price: 1} }
+   {$sort :{'category.name': 1} }
+ ])
+
+//
+db.getCollection('products').find({ price: { $gte: 10000, $lte: 20000 }, stock:{ $in: [50, 20] } }).sort({price: -1})
+
+// $and
+db.getCollection('products').find({ $and: [ { codEligible: {$ne: false} }, { codEligible: {$eq: true} }, { codEligible: {$ne: null} } ] })
+
+
+
+
+// ******** $ne, $eq Without Aggregation   ***************
+db.getCollection('products').find({codEligible: {$ne: false}, codEligible: {$eq: true} })
+
+//********* $ne, $eq With Aggregation   ****************
+db.products.aggregate([    
+    {$match: {codEligible: {$ne: false}, codEligible: {$eq: true} } } 
+])
+    
+    
